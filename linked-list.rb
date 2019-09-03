@@ -20,20 +20,19 @@ class Stack
 		@data = LinkedListNode.new(value, @data)
 	end
 
-	def reverse_list(list)
-  		stack = Stack.new
-  		while list
-    		stack.push(list.value)
-    		list = list.next_node
-  		end
-		return stack.data
-	end
-
 	def pop
 		# take a dish off the stack
 		to_be_popped = @data
 		@data = to_be_popped.next_node #like 23
 		to_be_popped.next_node = nil
+	end
+
+	def reverse_list(node, previous=nil)
+  		if node
+  			next_node = node.next_node
+  			node.next_node = previous
+  			reverse_list(next_node, node)
+  		end
 	end
 
 	def output
@@ -42,10 +41,29 @@ class Stack
 	end
 
 	def print_stack(node)
-		puts node.value
-		if node.next_node != nil
-			print_stack(node.next_node) #recurrsion!
+		if node
+			print "#{node.value} -->"
+			print_stack (node.next_node)
+		else
+			print "nil/n"
+			return
 		end
+	end
+
+	def infinite_loop?(node)
+  		tortoise = node.next_node
+  		hare = node.next_node
+
+  		until hare.nil?
+    		hare = hare.next_node
+    		return false if hare.nil?
+
+		    hare = hare.next_node
+		    tortoise = tortoise.next_node
+		    return true if hare == tortoise
+  		end
+
+  		return false
 	end
 
 end
@@ -54,8 +72,12 @@ megan_stack = Stack.new
 megan_stack.push(82)
 megan_stack.push(23)
 megan_stack.push(7)
-megan_stack.output
+megan_stack.reverse_list(megan_stack.output)
 megan_stack.pop
 megan_stack.output
-revlist = reverse_list(megan_stack)
-print_stack(revlist)
+
+puts infinite_loop?
+node.next_node = node3
+puts infinite_loop?(node3)
+
+
